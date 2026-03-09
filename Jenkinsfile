@@ -3,15 +3,33 @@ pipeline {
 
   stages {
     stage('Checkout') {
-      steps { checkout scm }
+      steps {
+        checkout scm
+      }
     }
 
     stage('Build') {
-      steps { sh 'javac app.java' }
+      steps {
+        script {
+          if (isUnix()) {
+            sh 'javac app.java'
+          } else {
+            bat 'javac app.java'
+          }
+        }
+      }
     }
 
     stage('Run') {
-      steps { sh 'java app' }
+      steps {
+        script {
+          if (isUnix()) {
+            sh 'java app'
+          } else {
+            bat 'java app'
+          }
+        }
+      }
     }
   }
 }
